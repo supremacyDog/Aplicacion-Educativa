@@ -38,11 +38,8 @@ app.use("/components", express.static("src/views/components"));
 app.use("/pages", express.static("src/views/pages"));
 
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
 const MAX_RETRIES = 10;
