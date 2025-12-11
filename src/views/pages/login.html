@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión en ForceStack</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <main class="login-wrapper">
+      <div class="login-card">
+
+        <div class="login-left">
+
+          <div class="login-container">
+            <div class="header">
+                        <h1>Bienvenido</h1>
+                        <p>Comienza tu viaje de aprendizaje con Python.</p>
+                    </div>
+
+            <div class="formregistro">
+              <form
+                class="login-form"
+                id="loginForm"
+                action="/users/login"
+                method="POST"
+                autocomplete="off"
+              >
+                <div class="input-group">
+                  <label for="correo">Correo Electrónico</label>
+                  <input
+                    type="email"
+                    id="correo"
+                    name="correo"
+                    placeholder="tu@correo.com"
+                    required
+                  />
+                </div>
+
+                <div class="input-group">
+                  <label for="contraseña">Contraseña</label>
+                  <div class="contraseña-input-container">
+                    <input
+                      type="password"
+                      id="contraseña"
+                      name="contraseña"
+                      placeholder="Introduce tu contraseña"
+                      required
+                      minlength="6"
+                    />
+
+                    <button type="button" class="contraseña-toggle">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+
+                <a href="/recuperar" class="forgot-contraseña">¿Olvidé mi contraseña?</a>
+              </form>
+            </div>
+
+            <div class="divider" role="separator">o continuar con</div>
+
+            <div class="social-login">
+              <a href="/auth/google" class="btn btn-google">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQExly8Xk3GWUOkmUGETvVobduKHck3ivnVA&s" />
+                Continuar con Google
+              </a>
+
+              <a href="/auth/microsoft" class="btn btn-microsoft">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" />
+                Continuar con Microsoft
+              </a>
+            </div>
+
+            <div class="signup-link">
+              <span>¿No tienes una cuenta?</span>
+              <a href="/registro">Regístrate</a>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="login-right">
+          <div class="overlay">
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </body>
+  <script src="js/login.js"></script>
+</html>

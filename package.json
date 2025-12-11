@@ -1,0 +1,41 @@
+{
+  "name": "forcestack-repository",
+  "version": "1.0.0",
+  "description": "Este proyecto corresponde a la materia **Generación de Software** y consiste en el desarrollo de un **sistema de aprendizaje en línea exclusivo para Python**, inspirado en plataformas educativas como *Platzi*.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "lint": "npx eslint . --ext .js,.mjs",
+    "lint:fix": "npx eslint . --ext .js,.mjs --fix",
+    "test": "jest --coverage --runInBand"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
+    "passport-azure-ad": "^4.3.5",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-microsoft": "^2.1.0",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.37.0",
+    "globals": "^16.4.0",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.10",
+    "sequelize-cli": "^6.6.3",
+    "supertest": "^7.1.4"
+  }
+}

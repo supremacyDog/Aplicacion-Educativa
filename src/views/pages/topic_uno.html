@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tópico 1 - Fundamentos de Python</title>
+
+  <link rel="stylesheet" href="/css/style_dashboard.css" />
+  <link rel="stylesheet" href="/css/style_sidebar.css" />
+  <link rel="stylesheet" href="/css/style_topic.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <div id="navbar-placeholder"></div>
+  <script src="/js/loadNavbar.js"></script>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <main class="module-content">
+      <section id="lesson-content"></section>
+
+      <!-- OVERVIEW -->
+      <div id="lesson-overview" class="lesson-block" style="display:none;">
+        <section class="topic-banner">
+
+          <div class="banner-header">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python Logo">
+            <div>
+              <div id="edit-topic-container"></div>
+              <h1>Fundamentos de Python</h1>
+              <p class="subtitle">Tu primer acercamiento profesional al lenguaje más usado del mundo.</p>
+            </div>
+          </div>
+
+          <div class="banner-body">
+            <p>
+              En este módulo conocerás los pilares esenciales de Python: qué es, cómo funciona,
+              cómo instalarlo, cómo ejecutar tus primeros programas, variables, tipos de datos,
+              estructuras básicas y más.
+            </p>
+
+            <p>
+              A medida que completes las lecciones, irás desbloqueando nuevos contenidos,
+              infografías visuales, un checkpoint interactivo y finalmente la evaluación
+              final del módulo.
+            </p>
+
+            <div class="banner-badge">
+              <span class="badge">Nivel: Principiante</span>
+              <span class="badge">Duración aproximada: 1 hora</span>
+              <span class="badge">Incluye evaluación final ✔</span>
+            </div>
+          </div>
+
+        </section>
+      </div>
+
+
+      <div id="lesson-intro-python" class="lesson-block" style="display:none;">
+        <section class="section">
+
+          <div class="content-block">
+            <h1 class="lesson-title">¿Qué es Python?</h1>
+
+            <h2>Un lenguaje moderno y poderoso</h2>
+            <p>
+              <strong>Python</strong> es un lenguaje de programación <em>interpretado, multiplataforma y de alto nivel</em>,
+              creado por <strong>Guido van Rossum</strong> y lanzado en 1991.
+              Su principal característica es que prioriza la legibilidad del código y su facilidad de uso.
+            </p>
+            <p>
+              A diferencia de otros lenguajes, Python permite escribir programas de forma clara,
+              usando una sintaxis simple basada en indentación, lo que lo convierte en uno de los lenguajes
+              más amigables para aprender a programar.
+            </p>
+
+            <h2>¿Por qué es tan popular hoy?</h2>
+            <ul>
+              <li>Sintaxis simple (ideal para principiantes)</li>
+              <li>Gran comunidad y miles de librerías</li>
+              <li>Útil para IA, web, automatización, análisis de datos, videojuegos y más</li>
+              <li>Funciona en Windows, Linux y macOS sin cambios en el código</li>
+            </ul>
+
+            <h2>El Zen de Python</h2>
+            <p>Python tiene una filosofía interna llamada <em>“The Zen of Python”</em>, que incluye principios como:</p>
+            <ul>
+              <li><strong>Simple es mejor que complejo.</strong></li>
+              <li><strong>Explícito es mejor que implícito.</strong></li>
+              <li><strong>La legibilidad importa.</strong></li>
+            </ul>
+
+            <h2>Áreas donde Python domina</h2>
+            <ul>
+              <li>Inteligencia Artificial y Machine Learning</li>
+              <li>Automatización</li>
+              <li>Aplicaciones web</li>
+              <li>Ciencia de datos</li>
+              <li>Ciberseguridad</li>
+            </ul>
+            <button class="next-btn" onclick="completeLesson('intro-python')">Siguiente</button>
+          </div>
+        </section>
+      </div>
+
+
+
+
+      <div id="lesson-install" class="lesson-block" style="display:none;">
+        <section class="section">
+
+          <div class="content-block">
+            <h1 class="lesson-title">Instalación y Configuración del Entorno</h1>
+            <h2>1. Descargando Python</h2>
+            <p>
+              Para instalar Python en tu computadora, visita el sitio oficial:
+              <a href="https://www.python.org/downloads/" target="_blank"><strong>python.org</strong></a>.
+            </p>
+            <ul>
+              <li>Compatible con Windows, Linux y macOS.</li>
+              <li>Incluye el intérprete de Python y herramientas básicas.</li>
+              <li>Recomendación: Instalar la versión estable más reciente.</li>
+            </ul>
+
+            <h2>2. Verificar instalación</h2>
+            <p>Después de instalar, abre tu terminal o consola y escribe:</p>
+            <pre class="code-snippet">python --version</pre>
+
+            <h2>3. Editores recomendados</h2>
+            <ul>
+              <li><strong>VS Code</strong> (ligero, rápido y con soporte para Python).</li>
+              <li><strong>PyCharm</strong> (más avanzado, ideal para proyectos grandes).</li>
+              <li><strong>Jupyter Notebook</strong> (excelente para ciencia de datos).</li>
+            </ul>
+
+            <h2>4. Primeros pasos en VS Code</h2>
+            <ol>
+              <li>Abre VS Code</li>
+              <li>Instala la extensión "Python" de Microsoft</li>
+              <li>Crea un archivo <strong>.py</strong></li>
+              <li>Escribe tu primer comando</li>
+            </ol>
+
+            <strong>print("Instalación completa ")</strong>
+            
+            <button class="next-btn" onclick="completeLesson('install')">Siguiente</button>
+          </div>
+
+          <!-- QUIZ -->
+
+        </section>
+      </div>
+      
+
+
+      
+      <div id="lesson-hola-mundo" class="lesson-block" style="display:none;">
+        <section class="section">
+
+          <div class="content-block">
+            <h1 class="lesson-title">Tu primer programa en Python: "Hola Mundo"</h1>
+
+            <h2>1. Introducción al primer programa</h2>
+            <p>
+              Tradicionalmente, cuando se aprende un nuevo lenguaje de programación, el primer programa que se escribe es el famoso 
+              <strong>"Hola Mundo"</strong>.  
+              Este programa simplemente muestra un mensaje en la pantalla, pero marca el inicio oficial de tu camino como programador/a.
+            </p>
+
+            <h2>2. El comando <strong>print()</strong></h2>
+            <p>
+              En Python, usamos la función <strong>print()</strong> para mostrar información en pantalla.  
+              Esta función recibe un texto o valor y lo imprime en la consola.
+            </p>
+
+            <pre class="code-snippet">print("Hola Mundo")</pre>
+
+            <p>
+              Cuando ejecutas este código, Python muestra exactamente el texto que está entre comillas.
+            </p>
+
+            <h2>3. Ejecutando el programa</h2>
+            <p>Puedes ejecutar tu archivo <strong>.py</strong> de dos formas:</p>
+            <ul>
+              <li>Desde una terminal:</li>
+            </ul>
+
+            <pre class="code-snippet">python hola_mundo.py</pre>
+
+            <ul>
+              <li>Desde VS Code presionando <strong>Run ▶</strong></li>
+            </ul>
+
+            <h2>4. Experimenta cambiando el mensaje</h2>
+            <p>Prueba modificar el texto:</p>
+
+            <strong>print("Mi nombre es ...")</strong>
+
+            <button class="next-btn" onclick="completeLesson('hola-mundo')">Siguiente</button>
+          </div>
+
+          <!-- QUIZ DE LA LECCIÓN -->
+
+        </section>
+      </div>
+      
+
+
+
+      
+      <div id="lesson-variables" class="lesson-block" style="display:none;">
+        <section class="section">
+
+          <div class="content-block">
+            <h1 class="lesson-title">Variables y Tipos de Datos en Python</h1>
+
+            <h2>1. ¿Qué es una variable?</h2>
+            <p>
+              Una <strong>variable</strong> es un nombre que almacena un valor dentro de la memoria del programa.
+              Puedes pensar en una variable como una “caja” donde guardas un dato que luego podrás usar:
+            </p>
+
+            <p>
+              En Python, no necesitas indicar el tipo; Python lo detecta automáticamente.
+            </p>
+
+            <h2>2. Tipos de datos básicos</h2>
+            <ul>
+              <li><strong>int</strong> → números enteros (23, -5, 100)</li>
+              <li><strong>float</strong> → números decimales (3.14, 2.0)</li>
+              <li><strong>str</strong> → cadenas de texto ("Hola", "Python")</li>
+              <li><strong>bool</strong> → booleanos (True, False)</li>
+            </ul>
+
+            <h2>3. Tipos de datos compuestos</h2>
+            <ul>
+              <li><strong>list</strong> → lista de valores: </strong>[1, 2, 3]</strong></li>
+              <li><strong>tuple</strong> → lista inmutable: <strong>(4, 5, 6)</strong></li>
+              <li><strong>dict</strong> → clave-valor: <strong>{"nombre": "Alex", "edad": 20}</strong></li>
+            </ul>
+
+            <h2>4. Tipado dinámico en Python</h2>
+            <p>Python permite cambiar el tipo de una variable simplemente asignándole un nuevo valor:</p>
+
+            <p><strong>x = 10      // x es entero</strong></p>
+            <p><strong>x = "Hola"   // x ahora es cadena</strong></p>
+
+            <h2>5. Errores comunes con variables</h2>
+            <ul>
+              <li>No usar comillas en cadenas de texto</li>
+              <li>Olvidar mayúsculas/minúsculas (Python distingue entre ellas)</li>
+              <li>Reemplazar variables sin darte cuenta</li>
+            </ul>
+            <button class="next-btn" onclick="completeLesson('variables')">Siguiente</button>
+          </div>
+
+          <!-- QUIZ -->
+
+        </section>
+      </div>
+
+
+
+
+      <div id="lesson-tipos-imagen" class="lesson-block" style="display:none;">
+        <section class="section">
+
+          <div class="content-block">
+            <h1 class="lesson-title">Infografía: Tipos de Datos en Python</h1>
+
+            <p>
+              En Python existen diferentes tipos de datos que permiten almacenar información según su naturaleza.
+              Esta infografía resume los principales tipos que verás a lo largo de tu aprendizaje:
+            </p>
+
+            <img class="content-image" 
+                src="https://cdn.programiz.com/sites/tutorial2program/files/python-data-types.jpg" 
+                alt="Tipos de datos en Python"/>
+
+            <h2>Explicación de los principales tipos</h2>
+            <ul>
+              <li><strong>int</strong> → números enteros (ej: 10, -3, 200)</li>
+              <li><strong>float</strong> → números decimales (ej: 3.14, 2.0)</li>
+              <li><strong>str</strong> → cadenas de texto ("Python")</li>
+              <li><strong>bool</strong> → valores lógicos (True o False)</li>
+              <li><strong>list</strong> → colecciones ordenadas y mutables (ej: [1,2,3])</li>
+              <li><strong>tuple</strong> → colecciones ordenadas e inmutables (ej: (1,2,3))</li>
+              <li><strong>dict</strong> → estructura clave-valor (ej: {"nombre": "Pablo"})</li>
+            </ul>
+
+            <p>
+              La elección del tipo adecuado es importante para procesar datos correctamente y evitar errores.
+            </p>
+
+            <button class="next-btn" onclick="completeLesson('tipos-imagen')">Siguiente</button>
+          </div>
+
+          <!-- QUIZ -->
+
+        </section>
+      </div>
+
+
+
+
+
+      <div id="lesson-quiz1" class="lesson-block" style="display:none;">
+        <section class="section">
+
+          <div class="content-block">
+            <h1 class="lesson-title">Checkpoint 1 — Fundamentos de Python</h1>
+
+            <p>
+              Este checkpoint evalúa tus conocimientos fundamentales antes de avanzar.
+              Responde las siguientes preguntas:
+            </p>
+
+            <h2>1. ¿Cuál de las siguientes opciones describe mejor a Python?</h2>
+            <label><input type="radio" name="cq1" value="a"> Un lenguaje compilado y de bajo nivel</label><br>
+            <label><input type="radio" name="cq1" value="b"> Un lenguaje interpretado, fácil de aprender y multiplataforma</label><br>
+            <label><input type="radio" name="cq1" value="c"> Un sistema operativo basado en Linux</label><br>
+
+            <h2>2. El comando <code>python --version</code> sirve para verificar la versión instalada. (V/F)</h2>
+            <label><input type="radio" name="cq2" value="v"> Verdadero</label><br>
+            <label><input type="radio" name="cq2" value="f"> Falso</label><br>
+
+            <h2>3. Escribe un ejemplo válido de una variable en Python:</h2>
+            <textarea id="cq3" placeholder='Ej: nombre = "Pablo"' 
+                      style="width:100%; height:80px;"></textarea>
+
+            <button onclick="gradeCheckpoint1()">Enviar respuestas</button>
+          </div>
+
+        </section>
+      </div>
+
+
+
+      <div id="lesson-final-exam" class="lesson-block" style="display:none;">
+        <section class="section">
+
+          <div class="content-block">
+            <h1 class="lesson-title">Evaluación Final del Módulo: Fundamentos de Python</h1>
+
+            <h2>1. ¿Qué función se usa para imprimir texto en Python?</h2>
+            <label><input type="radio" name="fe1" value="a"> echo()</label><br>
+            <label><input type="radio" name="fe1" value="b"> print()</label><br>
+            <label><input type="radio" name="fe1" value="c"> write()</label><br>
+
+            <h2>2. Python es un lenguaje…</h2>
+            <label><input type="radio" name="fe2" value="a"> Compilado</label><br>
+            <label><input type="radio" name="fe2" value="b"> Interpretado</label><br>
+            <label><input type="radio" name="fe2" value="c"> Basado en hardware</label><br>
+
+            <h2>3. El comando <strong>python --version</strong> sirve para ver la versión instalada. (V/F)</h2>
+            <label><input type="radio" name="fe3" value="v"> Verdadero</label><br>
+            <label><input type="radio" name="fe3" value="f"> Falso</label><br>
+
+            <h2>4. ¿Qué tipo de dato es <strong>[1,2,3]</strong>?</h2>
+            <label><input type="radio" name="fe4" value="a"> list</label><br>
+            <label><input type="radio" name="fe4" value="b"> tuple</label><br>
+            <label><input type="radio" name="fe4" value="c"> dict</label><br>
+
+            <h2>5. En Python, la variable <strong>x = "Hola"</strong> es de tipo:</h2>
+            <label><input type="radio" name="fe5" value="a"> str</label><br>
+            <label><input type="radio" name="fe5" value="b"> int</label><br>
+            <label><input type="radio" name="fe5" value="c"> float</label><br>
+
+
+            <button onclick="gradeFinalExam()">Enviar evaluación</button>
+          </div>
+
+        </section>
+      </div>
+    
+
+
+
+      
+
+
+    </main>
+  </div>
+
+  <script type="module" src="/js/courseData.js"></script>
+  <script type="module" src="/js/sidebarDynamic.js"></script>
+  <script type="module" src="/js/lessonLoader.js"></script>
+
+  <script>
+    loadLesson("overview");
+  </script>
+
+  <script>
+    // Obtener usuario autenticado
+    fetch("/auth/me")
+      .then(res => res.json())
+      .then(user => {
+        if (user.rol === "profesor editor") {
+          document.getElementById("edit-topic-container").innerHTML = `
+            <button id="edit-topic-btn" class="edit-btn" style="
+              padding: 6px 12px;
+              border-radius: 8px;
+              background: #4a90e2;
+              color: white;
+              border: none;
+              cursor: pointer;
+              margin-bottom: 10px;
+            ">
+              ✏️ Editar tópico
+            </button>
+          `;
+
+          document.getElementById("edit-topic-btn").onclick = openTopicEditor;
+        }
+      });
+
+    function openTopicEditor() {
+      document.getElementById("edit-modal").style.display = "flex";
+    }
+  </script>
+
+  <!-- Modal de edición de tópico -->
+  <div id="edit-modal" style="
+    display:none;
+    position: fixed; 
+    left:0; top:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+  ">
+    <div style="background:white; padding:25px; width:600px; border-radius:12px;">
+      <h2>Editar Tópico</h2>
+
+      <label>Título:</label>
+      <input id="edit-title" style="width:100%; margin-bottom:10px;" type="text">
+
+      <label>Descripción:</label>
+      <textarea id="edit-desc" style="width:100%; height:80px; margin-bottom:10px;"></textarea>
+
+      <label>Contenido:</label>
+      <textarea id="edit-content" style="width:100%; height:200px; margin-bottom:10px;"></textarea>
+
+      <button onclick="saveTopicChanges()" style="background:#4a90e2;color:white;padding:8px;">Guardar</button>
+      <button onclick="closeModal()" style="margin-left:10px;">Cancelar</button>
+    </div>
+  </div>
+
+  <script>
+    function closeModal() {
+      document.getElementById("edit-modal").style.display = "none";
+    }
+
+    // Cargar contenido actual
+    fetch("/api/topics/1")
+      .then(r => r.json())
+      .then(t => {
+        document.getElementById("edit-title").value = t.titulo;
+        document.getElementById("edit-desc").value = t.descripcion;
+        document.getElementById("edit-content").value = t.contenido;
+      });
+
+    function saveTopicChanges() {
+      const data = {
+        titulo: document.getElementById("edit-title").value,
+        descripcion: document.getElementById("edit-desc").value,
+        contenido: document.getElementById("edit-content").value
+      };
+
+      fetch("/api/topics/1/edit", {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+      })
+      .then(r => r.json())
+      .then(res => {
+        alert("Tópico actualizado con versión guardada");
+        closeModal();
+        location.reload();
+      });
+    }
+  </script>
+
+</body>
+</html>

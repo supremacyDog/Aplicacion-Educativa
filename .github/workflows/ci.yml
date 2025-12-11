@@ -1,0 +1,80 @@
+name: CI - ForceStack
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  build-and-test:
+    name: Build, Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Clonar el repositorio
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # 2️⃣ Configurar Node.js con caché para npm
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: "npm"
+
+      # 3️⃣ Instalar dependencias
+      - name: Instalar dependencias
+        run: npm install
+
+      # 4️⃣ Ejecutar ESLint
+      - name: Ejecutar ESLint
+        run: |
+          echo "Ejecutando análisis de código con ESLint..."
+          npm run lint
+
+      # 5️⃣ Ejecutar pruebas con Jest
+      - name: Ejecutar pruebas unitarias con Jest
+        run: |
+          echo "Ejecutando pruebas unitarias..."
+          npm test -- --coverage --runInBand
+
+      # 6️⃣ Subir reportes de cobertura a GitHub (opcional)
+      - name: Guardar reporte de cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-jest
+          path: coverage/
+
+  docker-build:
+    name: Build de imagen Docker
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      # 1️⃣ Clonar el repositorio
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # 2️⃣ Configurar Docker Buildx (más eficiente para caché)
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 3️⃣ Iniciar sesión en DockerHub (opcional si usas tu cuenta)
+      # - name: Login a DockerHub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 4️⃣ Construir imagen Docker
+      - name: Construir imagen de backend
+        run: docker build -t forcestack-backend -f ./Dockerfile .
+
+      # 5️⃣ Ejecutar contenedor temporal para verificar que funcione
+      - name: Verificar ejecución del contenedor
+        run: |
+          docker run --rm -d -p 3000:3000 forcestack-backend
+          sleep 5
+          docker ps -a

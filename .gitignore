@@ -1,0 +1,28 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Archivos de entorno
+.env
+
+# Archivos de sistema
+.DS_Store
+.vscode/
+
+# Docker y Git
+docker-compose.yml
+.git
+
+# Tests
+coverage/
+dist/
+build/
+.jest_cache/
+
+
+# VSCode
+.vscode/
+
+# Otros temporales
+*.log

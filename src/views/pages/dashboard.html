@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard de aprendizaje de Python">
+    <title>Dashboard Principal - Enseñanza con Python</title>
+    <link rel="stylesheet" href="css/style_dashboard.css">
+</head>
+<body class="dashboard-page">
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.get("token")) {
+            const user = {
+                token: params.get("token"),
+                nombre: params.get("nombre"),
+                apellido: params.get("apellido"),
+                correo: params.get("correo"),
+                foto: params.get("foto")
+            };
+
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("token", user.token);
+
+            window.history.replaceState({}, document.title, "/dashboard");
+        }
+    </script>
+
+    <div id="navbar-placeholder"></div>
+    <script src="/js/loadNavbar.js"></script>
+
+    <main class="main-content">
+        <div class="container">
+
+            <header class="welcome-header">
+                <h1 class="welcome-title">¡Bienvenido de nuevo!</h1>
+            </header>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const userData = localStorage.getItem("user");
+                    if (!userData) return;
+
+                    const user = JSON.parse(userData);
+                    const welcomeTitle = document.querySelector(".welcome-title");
+
+                    if (welcomeTitle) {
+                        welcomeTitle.textContent = `¡Bienvenido de nuevo, ${user.nombre}!`;
+                    }
+                });
+            </script>
+
+            <section class="courses-grid">
+
+                <article class="course-card">
+                    <div class="course-image course-image-python">
+                        <img src="/img/fundamentos.png" 
+                            alt="Fundamentos de Python">
+                    </div>
+                    <div class="course-content">
+                        <h2 class="course-title">Fundamentos de Python</h2>
+                        <p class="course-description">Resumen de los conceptos básicos.</p>
+
+                        <div class="progress-section">
+                            <div class="progress-header">
+                                <span class="progress-label">Progreso</span>
+                                <span class="progress-percentage">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <button class="btn-continue" data-target="pages/topic_uno.html">Continuar</button>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <div class="course-image course-image-data">
+                        <img src="/img/estructura.png" 
+                            alt="Estructuras de Datos">
+                    </div>
+                    <div class="course-content">
+                        <h2 class="course-title">Estructuras de Datos</h2>
+                        <p class="course-description">Resumen sobre listas, tuplas, diccionarios.</p>
+
+                        <div class="progress-section">
+                            <div class="progress-header">
+                                <span class="progress-label">Progreso</span>
+                                <span class="progress-percentage">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <button class="btn-continue">Continuar</button>
+                    </div>
+                </article>
+
+                <!-- Próximamente -->
+                <article class="course-card course-card-placeholder">
+                    <div class="course-image course-image-cloud">
+                        <img src="/img/proximamente.png" 
+                            alt="Próximamente">
+                    </div>
+                    <div class="course-content">
+                        <h2 class="course-title">Próximamente</h2>
+                        <p class="course-description">Nuevos cursos disponibles pronto.</p>
+                    </div>
+                </article>
+
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Enseñanza con Python. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".btn-continue").forEach(button => {
+                button.addEventListener("click", () => {
+                    const target = button.getAttribute("data-target");
+                    if (target) window.location.href = target;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

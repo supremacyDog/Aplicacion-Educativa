@@ -1,0 +1,38 @@
+# Ignorar dependencias locales
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Ignorar archivos de entorno
+.env
+.env.local
+.env.*.local
+
+# Ignorar archivos del sistema y logs
+.DS_Store
+*.log
+*.tmp
+
+# Ignorar cachés y compilaciones
+dist
+build
+coverage
+
+# Ignorar configuraciones del editor
+.vscode
+.idea
+*.swp
+
+# Ignorar archivos de Git
+.git
+.gitignore
+.gitmodules
+
+# Ignorar archivos de Docker temporales
+docker-compose.override.yml
+Dockerfile.dev
+
+# Otros archivos que no son necesarios en la imagen
+README.md
+tests/
+docs/
