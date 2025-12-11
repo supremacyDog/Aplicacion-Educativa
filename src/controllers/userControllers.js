@@ -70,7 +70,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/google/callback",
+      callbackURL: "http://dramatic-merola-supremacydog-ef01a5b2.koyeb.app/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -100,7 +100,7 @@ passport.use(
     {
       clientID: process.env.MICROSOFT_CLIENT_ID,
       clientSecret: process.env.MICROSOFT_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/microsoft/callback",
+      callbackURL: "http://dramatic-merola-supremacydog-ef01a5b2.koyeb.app/auth/microsoft/callback",
       scope: ["user.read"],
       tenant: process.env.MICROSOFT_TENANT_ID || "common",
     },
