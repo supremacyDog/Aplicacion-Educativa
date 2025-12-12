@@ -89,6 +89,9 @@ app.get("/registro", (req, res) => {
 app.get("/dashboard", (req, res) => {
   res.sendFile("pages/dashboard.html", { root: "src/views" });
 });
+app.get("/configuration", (req, res) => {
+  res.sendFile("pages/configuration.html", { root: "src/views" });
+});
 
 app.get("/topic_uno", (req, res) => {
   res.sendFile("pages/topic_uno.html", { root: "src/views" });
