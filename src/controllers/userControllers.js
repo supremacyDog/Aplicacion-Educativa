@@ -9,52 +9,80 @@ import pkg from "pg";
 dotenv.config();
 const { Pool } = pkg;
 
+/**
+ * ================================
+ * CONFIGURACIÓN GLOBAL
+ * ================================
+ */
+const DEFAULT_FOTO = "/img/default-user.png";
+
+/**
+ * ================================
+ * CONEXIÓN A POSTGRES (RENDER)
+ * ================================
+ */
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
 });
 
-async function findOrCreateUser(email, nombre, apellido, provider, foto = "") {
+/**
+ * ================================
+ * NORMALIZAR FOTO
+ * ================================
+ */
+function normalizarFoto(foto) {
+  if (!foto || typeof foto !== "string") return DEFAULT_FOTO;
+  if (foto.trim().length < 6) return DEFAULT_FOTO;
+  return foto;
+}
+
+/**
+ * ================================
+ * BUSCAR O CREAR USUARIO (OAUTH)
+ * ================================
+ */
+async function findOrCreateUser(email, nombre, apellido, provider, foto) {
   try {
+    const fotoFinal = normalizarFoto(foto);
+
     const result = await pool.query(
       "SELECT * FROM users WHERE correo = $1 LIMIT 1",
       [email]
     );
 
     if (result.rows.length === 0) {
-      console.log(`Registrando nuevo usuario desde ${provider}: ${email}`);
-
       const passDummy = await bcrypt.hash("OAUTH_USER_PASS", 10);
-      const fechaActual = new Date();
 
-      const insertQuery = `
+      const nuevo = await pool.query(
+        `
         INSERT INTO users (nombre, apellido, correo, contraseña, rol, fecha_creacion, foto)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        VALUES ($1,$2,$3,$4,$5,$6,$7)
         RETURNING *
-      `;
+        `,
+        [
+          nombre,
+          apellido,
+          email,
+          passDummy,
+          "estudiante",
+          new Date(),
+          fotoFinal,
+        ]
+      );
 
-      const nuevo = await pool.query(insertQuery, [
-        nombre,
-        apellido,
-        email,
-        passDummy,
-        "estudiante",
-        fechaActual,
-        foto
-      ]);
       return nuevo.rows[0];
     }
 
     const usuario = result.rows[0];
-    if (foto && usuario.foto !== foto) {
+
+    // Actualizar foto solo si es distinta y válida
+    if (fotoFinal !== usuario.foto) {
       await pool.query("UPDATE users SET foto = $1 WHERE correo = $2", [
-        foto,
-        email
+        fotoFinal,
+        email,
       ]);
-      usuario.foto = foto;
+      usuario.foto = fotoFinal;
     }
 
     return usuario;
@@ -64,20 +92,24 @@ async function findOrCreateUser(email, nombre, apellido, provider, foto = "") {
   }
 }
 
-//GOOGLE
+/**
+ * ================================
+ * GOOGLE OAUTH
+ * ================================
+ */
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://dramatic-merola-supremacydog-ef01a5b2.koyeb.app/auth/google/callback",
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (_, __, profile, done) => {
       try {
-        const correo = profile.emails[0].value;
+        const correo = profile.emails?.[0]?.value;
         const nombre = profile.name?.givenName || "";
         const apellido = profile.name?.familyName || "";
-        const foto = profile.photos?.[0]?.value || "";
+        const foto = profile.photos?.[0]?.value;
 
         const usuario = await findOrCreateUser(
           correo,
@@ -86,25 +118,30 @@ passport.use(
           "Google",
           foto
         );
-        return done(null, usuario);
+
+        done(null, usuario);
       } catch (error) {
-        return done(error, null);
+        done(error);
       }
     }
   )
 );
 
-//MICROSOFT
+/**
+ * ================================
+ * MICROSOFT OAUTH
+ * ================================
+ */
 passport.use(
   new MicrosoftStrategy(
     {
       clientID: process.env.MICROSOFT_CLIENT_ID,
       clientSecret: process.env.MICROSOFT_CLIENT_SECRET,
-      callbackURL: "http://dramatic-merola-supremacydog-ef01a5b2.koyeb.app/auth/microsoft/callback",
+      callbackURL: process.env.MICROSOFT_CALLBACK_URL,
       scope: ["user.read"],
       tenant: process.env.MICROSOFT_TENANT_ID || "common",
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (_, __, profile, done) => {
       try {
         const correo =
           profile.emails?.[0]?.value ||
@@ -112,15 +149,12 @@ passport.use(
           profile._json?.userPrincipalName;
 
         if (!correo) {
-          return done(
-            new Error("No se pudo obtener el email de Microsoft"),
-            null
-          );
+          return done(new Error("No se pudo obtener el email"), null);
         }
 
         const nombre = profile.name?.givenName || profile.displayName || "";
         const apellido = profile.name?.familyName || "";
-        const foto = profile._json.photo || "/img/microsoft.png";
+        const foto = profile._json?.photo;
 
         const usuario = await findOrCreateUser(
           correo,
@@ -129,27 +163,36 @@ passport.use(
           "Microsoft",
           foto
         );
-        return done(null, usuario);
+
+        done(null, usuario);
       } catch (error) {
-        return done(error, null);
+        done(error);
       }
     }
   )
 );
 
+/**
+ * ================================
+ * SESIONES
+ * ================================
+ */
 passport.serializeUser((user, done) => done(null, user.id));
 
 passport.deserializeUser(async (id, done) => {
   try {
     const result = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
     done(null, result.rows[0]);
-  } catch (e) {
-    done(e);
+  } catch (error) {
+    done(error);
   }
 });
 
-
-//Token
+/**
+ * ================================
+ * JWT + REDIRECCIÓN
+ * ================================
+ */
 const generarTokenYRedirigir = (req, res, next) => {
   if (!req.user) {
     return res.redirect("/login.html?error=usuario_no_encontrado");
@@ -162,126 +205,130 @@ const generarTokenYRedirigir = (req, res, next) => {
       expiresIn: "2h",
     });
 
-    const datos = {
+    const queryString = new URLSearchParams({
       token,
       nombre: req.user.nombre,
       apellido: req.user.apellido,
       correo: req.user.correo,
-      foto: req.user.foto && req.user.foto.length > 5 
-        ? req.user.foto 
-        : "/img/microsoft.png"
-    };
+      foto: normalizarFoto(req.user.foto),
+    }).toString();
 
-    const queryString = new URLSearchParams(datos).toString();
-
-    return res.redirect(`/dashboard?${queryString}`);
+    res.redirect(`/dashboard?${queryString}`);
   });
 };
 
 export const googleCallback = generarTokenYRedirigir;
 export const microsoftCallback = generarTokenYRedirigir;
 
-//Manual
+/**
+ * ================================
+ * REGISTRO MANUAL
+ * ================================
+ */
 export const registerUser = async (req, res) => {
   try {
-    
     const { nombre, apellido, correo, contraseña, rol } = req.body;
 
     if (!nombre || !apellido || !correo || !contraseña) {
-      return res
-        .status(400)
-        .json({ message: "Todos los campos son obligatorios" });
+      return res.status(400).json({ message: "Campos obligatorios" });
     }
 
-    const existe = await pool.query(
-      "SELECT correo FROM users WHERE correo = $1",
-      [correo]
-    );
+    const existe = await pool.query("SELECT 1 FROM users WHERE correo = $1", [
+      correo,
+    ]);
+
     if (existe.rows.length > 0) {
-      return res.status(400).json({ message: "El correo ya está registrado" });
+      return res.status(400).json({ message: "Correo ya registrado" });
     }
 
     const hash = await bcrypt.hash(contraseña, 10);
-    const fecha_creacion = new Date();
 
     await pool.query(
-      `INSERT INTO users (nombre, apellido, correo, contraseña, rol, fecha_creacion, foto)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [nombre, apellido, correo, hash, rol || "estudiante", fecha_creacion, "/img/microsoft.png"]
+      `
+      INSERT INTO users (nombre, apellido, correo, contraseña, rol, fecha_creacion, foto)
+      VALUES ($1,$2,$3,$4,$5,$6,$7)
+      `,
+      [
+        nombre,
+        apellido,
+        correo,
+        hash,
+        rol || "estudiante",
+        new Date(),
+        DEFAULT_FOTO,
+      ]
     );
 
     res.status(201).json({ message: "Usuario registrado exitosamente" });
   } catch (error) {
     console.error("Error al registrar:", error);
-    res.status(500).json({ message: "Error en el servidor" });
+    res.status(500).json({ message: "Error del servidor" });
   }
 };
 
+/**
+ * ================================
+ * MIDDLEWARES
+ * ================================
+ */
 export const isProfessor = (req, res, next) => {
   if (!req.user) return res.status(401).json({ error: "No autenticado" });
-
-  if (req.user.rol === "profesor" || req.user.rol === "profesor editor") {
-    return next();
-  }
-
+  if (["profesor", "profesor editor"].includes(req.user.rol)) return next();
   return res.status(403).json({ error: "No autorizado" });
 };
 
 export const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated && req.isAuthenticated()) {
-    return next();
-  }
+  if (req.isAuthenticated?.()) return next();
   return res.status(401).json({ error: "No autenticado" });
 };
 
-
+/**
+ * ================================
+ * LOGIN MANUAL
+ * ================================
+ */
 export const loginUser = async (req, res) => {
   try {
     const { correo, contraseña } = req.body;
 
     if (!correo || !contraseña) {
-      return res.status(400).json({ message: "Correo y contraseña son obligatorios" });
+      return res.status(400).json({ message: "Datos incompletos" });
     }
 
-    const result = await pool.query("SELECT * FROM users WHERE correo = $1", [correo]);
+    const result = await pool.query("SELECT * FROM users WHERE correo = $1", [
+      correo,
+    ]);
 
     if (result.rows.length === 0) {
       return res.status(400).json({ message: "Correo no registrado" });
     }
 
     const user = result.rows[0];
-
     const match = await bcrypt.compare(contraseña, user.contraseña);
+
     if (!match) {
       return res.status(400).json({ message: "Contraseña incorrecta" });
     }
 
-    //Google
     req.login(user, (err) => {
-      if (err) return res.status(500).json({ message: "Error en sesión" });
+      if (err) return res.status(500).json({ message: "Error de sesión" });
 
       const token = jwt.sign(user, process.env.JWT_SECRET || "secret_key", {
         expiresIn: "2h",
       });
 
-      const fotoFinal =
-        user.foto && user.foto.length > 5 ? user.foto : "/img/microsoft.png";
-
-      const params = new URLSearchParams({
-        token,
-        nombre: user.nombre,
-        apellido: user.apellido,
-        correo: user.correo,
-        foto: fotoFinal,
-      }).toString();
-
-      return res.json({
-        redirect: `/dashboard?${params}`,
-        message: "Login exitoso",
+      res.json({
+        redirect: `/dashboard?${new URLSearchParams({
+          token,
+          nombre: user.nombre,
+          apellido: user.apellido,
+          correo: user.correo,
+          foto: normalizarFoto(user.foto),
+        }).toString()}`,
       });
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error interno del servidor" });
+  } catch (error) {
+    console.error("Error en login:", error);
+    res.status(500).json({ message: "Error interno" });
   }
 };

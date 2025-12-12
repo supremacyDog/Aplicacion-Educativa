@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Configuración</title>
+    <link rel="stylesheet" href="/src/views/css/style_dashboard.css" />
+  </head>
+  <body>
+    <div id="navbar-placeholder"></div>
+    <script src="/js/loadNavbar.js"></script>
+
+    <main class="main-content">
+      <div class="container">
+        <header class="section-header">
+          <h1>Configuración</h1>
+          <p>Administra tu información personal</p>
+        </header>
+
+        <form class="settings-card">
+          <label>
+            Nombre
+            <input type="text" placeholder="$userProfile" />
+          </label>
+
+          <label>
+            Correo electrónico
+            <input type="email" placeholder="correo@ejemplo.com" />
+          </label>
+
+          <label>
+            Idioma
+            <select>
+              <option>Español</option>
+              <option>English</option>
+            </select>
+          </label>
+
+          <button type="submit" class="btn-continue">Guardar Cambios</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>
